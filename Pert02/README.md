@@ -1,4 +1,4 @@
-# Praktikum PBO Sesi 2 — Enkapsulasi dan Invariant
+# Praktikum PBO Sesi 2 â€” Enkapsulasi dan Invariant
 
 **Nama:** Harisa Malfa Liya  
 **NIM:** 4525210027  
@@ -22,19 +22,21 @@ Beberapa ketentuan yang digunakan dalam program adalah:
 
 | Nilai Akhir | Huruf Mutu |
 |---|---|
-| 80–100 | A |
-| 70–79,99 | B |
-| 60–69,99 | C |
-| 50–59,99 | D |
+| 80â€“100 | A |
+| 70â€“79,99 | B |
+| 60â€“69,99 | C |
+| 50â€“59,99 | D |
 | Di bawah 50 | E |
 
 Rumus nilai akhir:
 
-`Nilai Akhir = (Tugas × 0,30) + (UTS × 0,30) + (UAS × 0,40)`
+`Nilai Akhir = (Tugas Ã— 0,30) + (UTS Ã— 0,30) + (UAS Ã— 0,40)`
 
 ## 3. Kode Sebelum Perbaikan
 
-### A. PHP — `Mahasiswa.php`
+### A. PHP â€” `Mahasiswa.php`
+
+```php
 <?php
 declare(strict_types=1);
 
@@ -107,7 +109,10 @@ class Mahasiswa
     }
 }
 
-### A. PHP — `main.php`
+```
+### B. PHP â€” `main.php`
+
+```php
 <?php
 declare(strict_types=1);
 
@@ -141,7 +146,10 @@ try {
     echo '  Ditolak: ', $e->getMessage(), PHP_EOL;
 }
 
-### B. Java — `Mahasiswa.java`
+```
+### C. Java â€” `Mahasiswa.java`
+
+```java
 /**
  * Mahasiswa.java
  * Sesi 2 - enkapsulasi yang menjaga invariant.
@@ -177,7 +185,7 @@ public class Mahasiswa {
                      double nilaiUts, double nilaiUas) {
         // TODO 2: tolak NIM yang kosong atau hanya berisi spasi.
         // Lemparkan IllegalArgumentException dengan pesan yang menyebutkan
-        // apa yang salah — bukan sekadar "Error".
+        // apa yang salah â€” bukan sekadar "Error".
 
         // TODO 3: tolak setiap komponen nilai di luar rentang 0-100.
         // Petunjuk: buat satu method private pembantu agar kode tidak duplikat.
@@ -229,10 +237,13 @@ public class Mahasiswa {
     }
 }
 
-### B. Java — `Main.java`
+```
+### D. Java â€” `Main.java`
+
+```java
 /**
  * Main.java
- * Program uji — JANGAN DIUBAH pada langkah 1 sampai 4.
+ * Program uji â€” JANGAN DIUBAH pada langkah 1 sampai 4.
  * Kalau kode Anda benar, seluruh keluaran di bawah akan masuk akal.
  */
 public class Main {
@@ -269,8 +280,13 @@ public class Main {
     }
 }
 
+```
+
 ## 4. Implementasi PHP Setelah Perbaikan
-##Mahasiswa.php##
+
+### `Mahasiswa.php`
+
+```php
 <?php
 declare(strict_types=1);
 
@@ -351,7 +367,10 @@ class Mahasiswa
         );
     }
 }
-##main.php##
+```
+### `main.php`
+
+```php
 <?php
 declare(strict_types=1);
 
@@ -384,20 +403,17 @@ try {
 }
 
 
+```
 
-
-Hasil running PHP
-<img width="397" height="130" alt="Screenshot 2026-10-10 at 20 17 12" src="https://github.com/user-attachments/assets/d37e8ce2-ac88-4b72-b31f-545f9ad173fb" />
-
-
-
-
-
-
+### Hasil Running PHP
+![Hasil running PHP](https://github.com/user-attachments/assets/d37e8ce2-ac88-4b72-b31f-545f9ad173fb)
 
 
 ## 5. Implementasi Java Setelah Perbaikan
-##Mahasiswa.java##
+
+### `Mahasiswa.java`
+
+```java
 public class Mahasiswa {
     public static final double BOBOT_TUGAS = 0.30;
     public static final double BOBOT_UTS = 0.30;
@@ -472,9 +488,12 @@ public class Mahasiswa {
         ).replace('.', ',');
     }
 }
-##Main.java##
+```
+### `Main.java`
+
+```java
 /**
- * Program uji — JANGAN DIUBAH pada Langkah 1 sampai 4.
+ * Program uji â€” JANGAN DIUBAH pada Langkah 1 sampai 4.
  * Kalau kode Anda benar, seluruh keluaran di bawah akan masuk akal.
  */
 public class Main {
@@ -510,18 +529,14 @@ public class Main {
 }
 
 
+```
 
-
-
-Hasil running Java
-<img width="410" height="129" alt="Screenshot 2026-10-10 at 20 35 25" src="https://github.com/user-attachments/assets/f703c039-0bab-4e00-b8b5-793556fe1419" />
-
-
-
-
+### Hasil Running Java
+![Hasil running Java](https://github.com/user-attachments/assets/f703c039-0bab-4e00-b8b5-793556fe1419)
 
 
 ## 6. Cara Menjalankan Program
+
 
 ### PHP
 Pastikan Terminal berada di folder `Pert02`, kemudian jalankan:
@@ -541,12 +556,8 @@ java Main
 Jika tidak terdapat error, Terminal akan menampilkan rekap nilai dan hasil pengujian validasi.
 
 
-
-
-
-
-
 ## 7. Hasil Pengujian
+
 
 Pengujian dilakukan untuk memastikan perhitungan nilai dan aturan invariant bekerja dengan benar.
 
@@ -557,10 +568,6 @@ Pengujian dilakukan untuk memastikan perhitungan nilai dan aturan invariant beke
 | Menentukan huruf mutu | Huruf mutu sesuai rentang nilai |
 | Memasukkan nilai 150 | Data ditolak |
 | Memasukkan NIM kosong | Data ditolak |
-
-
-
-
 
 
 Contoh data yang digunakan pada program:
@@ -574,12 +581,8 @@ Contoh data yang digunakan pada program:
 *Catatan: Nilai akhir pada tabel dihitung dari bobot 30%, 30%, dan 40% sesuai data masukan program.*
 
 
-
-
-
-
-
 ## 8. Perbandingan PHP dan Java
+
 
 | Aspek | PHP 8 | Java |
 |---|---|---|
@@ -593,13 +596,8 @@ Contoh data yang digunakan pada program:
 Kedua bahasa dapat menerapkan prinsip enkapsulasi dan invariant. Perbedaannya terletak pada sintaks serta fitur yang digunakan untuk mencapai tujuan tersebut.
 
 
-
-
-
-
-
-
 ## 9. Kesimpulan
+
 
 Dari praktikum ini, dapat dipahami bahwa enkapsulasi tidak hanya berkaitan dengan pembatasan akses atribut, tetapi juga dengan menjaga data agar tetap valid selama objek digunakan.
 
