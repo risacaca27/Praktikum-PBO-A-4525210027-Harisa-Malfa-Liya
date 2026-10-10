@@ -383,8 +383,14 @@ try {
     echo '  Ditolak: ', $e->getMessage(), PHP_EOL;
 }
 
+
+
+
 Hasil running PHP
 <img width="397" height="130" alt="Screenshot 2026-10-10 at 20 17 12" src="https://github.com/user-attachments/assets/d37e8ce2-ac88-4b72-b31f-545f9ad173fb" />
+
+
+
 
 
 
@@ -503,8 +509,14 @@ public class Main {
     }
 }
 
+
+
+
+
 Hasil running Java
 <img width="410" height="129" alt="Screenshot 2026-10-10 at 20 35 25" src="https://github.com/user-attachments/assets/f703c039-0bab-4e00-b8b5-793556fe1419" />
+
+
 
 
 
@@ -531,6 +543,9 @@ Jika tidak terdapat error, Terminal akan menampilkan rekap nilai dan hasil pengu
 
 
 
+
+
+
 ## 7. Hasil Pengujian
 
 Pengujian dilakukan untuk memastikan perhitungan nilai dan aturan invariant bekerja dengan benar.
@@ -545,6 +560,9 @@ Pengujian dilakukan untuk memastikan perhitungan nilai dan aturan invariant beke
 
 
 
+
+
+
 Contoh data yang digunakan pada program:
 
 | NIM | Nama | Tugas | UTS | UAS | Nilai Akhir | Mutu |
@@ -554,6 +572,12 @@ Contoh data yang digunakan pada program:
 | 2024003 | Citra Wijaya | 92 | 88 | 95 | 92,20 | A |
 
 *Catatan: Nilai akhir pada tabel dihitung dari bobot 30%, 30%, dan 40% sesuai data masukan program.*
+
+
+
+
+
+
 
 ## 8. Perbandingan PHP dan Java
 
@@ -567,6 +591,10 @@ Contoh data yang digunakan pada program:
 | Representasi objek | `__toString()` | `toString()` |
 
 Kedua bahasa dapat menerapkan prinsip enkapsulasi dan invariant. Perbedaannya terletak pada sintaks serta fitur yang digunakan untuk mencapai tujuan tersebut.
+
+
+
+
 
 
 
