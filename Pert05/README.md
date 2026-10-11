@@ -1039,4 +1039,10 @@ kirimSemua([
 
 ## 9. Kesimpulan
 
-*(Tulis kesimpulan di sini: apa yang dipahami tentang polimorfisme, upcasting, kelemahan rantai `instanceof`, dan padanan overloading di PHP.)*
+Melalui praktikum ini, saya memahami bahwa polimorfisme membuat pemanggilan method lewat variabel bertipe induk dijalankan sesuai tipe objek sebenarnya saat program berjalan. Karena itu, `toString()` di kelas `BangunDatar` dapat memanggil `luas()` dan `keliling()` yang isinya baru ditulis di kelas turunan seperti `Lingkaran`, `Persegi`, `Segitiga`, dan `Trapesium`.
+
+Dengan *upcasting*, satu array bertipe `BangunDatar` dapat menampung berbagai bangun datar, dan perulangan yang sama dapat dipakai tanpa memeriksa tipe konkretnya. Bangun datar baru cukup ditambahkan sebagai kelas turunan dan satu baris pada array, tanpa mengubah logika perulangan. *Downcasting* dengan `instanceof` hanya dipakai bila benar-benar perlu, misalnya untuk mengakses `getJariJari()` yang hanya dimiliki `Lingkaran`.
+
+Perbandingan `AntiPattern` dan `AntiPatternRefaktor` menunjukkan bahwa rantai `if / else if` dengan `instanceof` adalah tanda rancangan yang bisa diperbaiki. Setiap tipe baru memaksa method `hitungLuas()` disunting, dan jika ada cabang yang terlewat, tipe tersebut tidak akan ditangani dengan benar. Pada versi polimorfik, pengetahuan cara menghitung luas berada di kelas masing-masing, sehingga kode lebih mudah dikembangkan dan lebih kecil kemungkinan salah.
+
+Pada PHP, tidak ada *method overloading* seperti di Java. Padanannya adalah default parameter, *union/nullable type*, dan *variadic*. Sementara itu, polimorfisme pada PHP bekerja dengan cara yang sama seperti di Java melalui kelas abstrak dan method yang di-*override*, seperti pada hierarki `BangunDatar` dan `Notifikasi`.
