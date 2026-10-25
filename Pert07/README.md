@@ -1,173 +1,347 @@
-# Praktikum Sesi 7 — Pemodelan Relasi Objek dan UML
+# LAPORAN PRAKTIKUM PBO
+## Sesi 7 — Pemodelan Relasi Objek dan UML
 
-**Sub-CPMK-P5 — Mahasiswa mampu menerjemahkan UML class diagram menjadi kode yang konsisten dan sebaliknya. (P3, C4)**
-
-**Keterkaitan teori:** Pertemuan 7 — Relasi Objek dan UML Class Diagram  
-**Durasi:** 170 menit (1 SKS praktikum) · **Bobot:** 6% dari nilai praktikum  
-**Bahasa:** Java 25 dan PHP 8.4+
-
-> Versi cetak modul ini: [`Modul-Praktikum-07-pemodelan-relasi-objek-dan-uml.docx`](Modul-Praktikum-07-pemodelan-relasi-objek-dan-uml.docx). Kerangka kode: [`starter/`](starter/).
+**Nama:** Harisa Malfa Liya  
+**NPM:** 4525210027  
+**Mata Kuliah:** Pemrograman Berorientasi Objek (PBO)
 
 ---
 
-## A. Tujuan sesi
+## 1. Tujuan Praktikum
 
-1. Menganalisis kebutuhan Sistem Perpustakaan menjadi model objek.
-2. Membuat use case diagram, class diagram, dan sequence diagram dengan PlantUML.
-3. Menerjemahkan class diagram menjadi kerangka kode yang konsisten.
-4. Membedakan agregasi dan komposisi melalui wujudnya di kode, bukan hanya di gambar.
+Praktikum ini bertujuan untuk memahami relasi antarobjek, khususnya komposisi dan agregasi, serta menerapkan konsep tersebut ke dalam program menggunakan Java dan PHP.
 
-## B. Alat dan bahan
+## 2. Implementasi Program
 
-- Lingkungan hasil sesi 1.
-- PlantUML terpasang dan bisa merender.
+### 2.1 Implementasi Java
 
-## C. Berkas starter
+Implementasi Java terdapat pada folder `starter/java/`.
 
-Salin ke folder tugas Anda; **jangan** menyunting berkas aslinya. Setiap komentar `TODO` harus Anda lengkapi sendiri — kode yang disalin dari sumber lain akan terlihat pada sesi demo.
+File yang digunakan:
+- 
+import model.Buku;
+import model.Jurusan;
 
-| Berkas | Keterangan |
-|---|---|
-| `starter/uml/perpustakaan-kerangka.puml` | Kerangka class diagram dengan bagian yang harus dilengkapi. |
-| `starter/java/` | Kerangka paket model dan service dengan TODO. |
-| `starter/php/` | Padanan PHP. |
-| `starter/deskripsi-kebutuhan.md` | Deskripsi kebutuhan Sistem Perpustakaan yang harus dianalisis. |
+/**
+ * Kompilasi dari folder sesi-07/java:
+ *     javac -d out $(find . -name "*.java")
+ *     java -cp out Main
+ */
+public class Main {
+    public static void main(String[] args) {
 
-## D. Langkah kerja
+        System.out.println("=== Komposisi: Buku memiliki Bab ===");
+        Buku buku = new Buku("PBO-001", "Pemrograman Berorientasi Objek", "A. W. Pribadi", 3);
+        buku.tambahBab(1, "Paradigma Objek");
+        buku.tambahBab(2, "Enkapsulasi");
+        buku.tambahBab(3, "Pewarisan dan Polimorfisme");
+        System.out.println("  " + buku);
+        buku.getBab().forEach(b -> System.out.println("    " + b));
 
-Kerjakan berurutan. Jangan melanjutkan ke langkah berikutnya sebelum checkpoint terpenuhi.
+        // Percobaan bukti-relasi.md nomor 1:
+        System.out.println();
+        System.out.println("  Mencoba mengubah koleksi internal dari luar...");
+        try {
+            buku.getBab().clear();
+            System.out.println("    MASALAH: koleksi internal berhasil dikosongkan dari luar!");
+            System.out.println("    Berarti getBab() Anda belum mengembalikan salinan.");
+        } catch (UnsupportedOperationException e) {
+            System.out.println("    Ditolak — koleksi bab tidak bisa diubah dari luar. Benar.");
+        }
 
-### Langkah 1 — Analisis kebutuhan
+        System.out.println();
+        System.out.println("=== Agregasi: Jurusan menaungi Mahasiswa ===");
+        Jurusan.Mahasiswa ani  = new Jurusan.Mahasiswa("2024001", "Ani Lestari");
+        Jurusan.Mahasiswa budi = new Jurusan.Mahasiswa("2024002", "Budi Santoso");
 
-- Baca deskripsi-kebutuhan.md dengan saksama. Deskripsi ini akan menjadi dasar seluruh pekerjaan Anda sampai sesi 14.
-- Buat sesi-07/analisis.md berisi: daftar kata benda (calon kelas), daftar kata kerja (calon method), dan daftar aturan bisnis (invariant).
-- Coret kata benda yang ternyata hanya atribut, bukan kelas. Tuliskan alasan pencoretannya.
+        Jurusan informatika = new Jurusan("TI", "Teknik Informatika");
+        informatika.daftarkan(ani);
+        informatika.daftarkan(budi);
+        System.out.println("  " + informatika);
 
-> **Checkpoint —** analisis.md memuat minimal enam calon kelas dan minimal lima aturan bisnis.
+        informatika.keluarkan(budi);
+        System.out.println("  Setelah Budi pindah: " + informatika);
+        System.out.println("  Budi tetap ada sebagai objek: " + budi);
+        System.out.println();
+        System.out.println("  Itulah bedanya: Bab tidak bisa hidup di luar Buku,");
+        System.out.println("  tetapi Mahasiswa tetap ada di luar Jurusan.");
+    }
+}
+`
+- File kelas yang mendukung implementasi relasi objek.
 
-### Langkah 2 — Use case diagram
+**Kode implementasi Java:**
 
-- Buat sesi-07/uml/usecase.puml dengan minimal dua aktor (Anggota, Petugas) dan enam use case.
-- Gunakan relasi include atau extend setidaknya satu kali, dan jelaskan pilihannya di analisis.md.
 
-**Terminal**
+### 2.2 Implementasi PHP
 
-```bash
-plantuml -tsvg sesi-07/uml/usecase.puml
-```
+Implementasi PHP terdapat pada folder `starter/php/`.
 
-> **Checkpoint —** Diagram ter-render dan menampilkan aktor serta batas sistem.
+File yang digunakan:
+- `<?php
+declare(strict_types=1);
 
-### Langkah 3 — Class diagram — bagian tersulit
+/**
+ * Sesi 7 — komposisi dan agregasi (PHP).
+ * Bandingkan dengan versi Java.
+ */
+enum JenisKeanggotaan: string{
+    case MAHASISWA = 'MAHASISWA';
 
-- Salin perpustakaan-kerangka.puml ke sesi-07/uml/class.puml dan lengkapi.
-- Untuk SETIAP relasi, tentukan derajat keterikatannya dan tuliskan multiplicity di kedua ujungnya.
-- Minimal harus ada: satu komposisi, satu agregasi, satu asosiasi, dan satu dependensi.
-- Uji setiap relasi dengan pertanyaan: "Kalau induknya dihapus, apakah bagian ini masih masuk akal?"
+    case DOSEN = 'DOSEN';
 
-> **Checkpoint —** class.puml memuat keempat jenis relasi dengan notasi dan multiplicity yang benar.
+    case UMUM = 'UMUM';
+}
 
-### Langkah 4 — Sequence diagram untuk satu alur
+enum StatusKoleksi: string {
+    case TERSEDIA = 'TERSEDIA';
 
-- Buat sesi-07/uml/sequence-pinjam.puml yang menggambarkan alur peminjaman buku dari Anggota sampai data tersimpan.
-- Tampilkan minimal empat objek dan satu alur alternatif (misalnya buku tidak tersedia).
+    case DIPINJAM = 'DIPINJAM';
 
-> **Checkpoint —** Diagram menampilkan pesan bolak-balik antar objek, bukan sekadar daftar langkah.
+    case HILANG = 'HILANG';
+}
 
-### Langkah 5 — Menerjemahkan diagram menjadi kode
+final class Bab
+{
+    /**
+     * TODO 1: buat constructor readonly untuk $nomor dan $judul.
+     *         Perhatikan: agar benar-benar komposisi, kelas ini hanya
+     *         boleh dibuat dari dalam Buku. PHP tidak punya nested class
+     *         seperti Java, jadi disiplin ini dijaga lewat konvensi —
+     *         tuliskan catatannya di bukti-relasi.md.
+     */
+    private int $nomor;
 
-- Salin kerangka java/ dan php/ ke sesi-07/. Lengkapi TODO sehingga strukturnya SAMA PERSIS dengan class diagram Anda.
-- Aturan yang wajib dipatuhi:
-  • Komposisi: objek bagian dibuat DI DALAM induk, dan getter mengembalikan salinan tak-berubah.
-  • Agregasi: objek bagian diterima dari luar lewat constructor atau method.
-  • Multiplicity 1..*: constructor menolak koleksi kosong.
-- Isi method boleh minimal, tetapi struktur, tipe, dan tanda tangan harus lengkap.
+    private string $judul;
 
-**Terminal**
+    public function __construct(int $nomor, string $judul)
+    {   
+        $this->nomor = $nomor;
+        $this->judul = $judul;
+    }
 
-```bash
-cd sesi-07/java
-javac -d out $(find . -name "*.java")
-java -cp out Main
-```
+    public function getNomor():int{
+        return $this->nomor;
+    }
 
-> **Checkpoint —** Program berjalan, dan setiap kelas di diagram ada di kode dengan nama yang sama persis.
+    public function getJudul():string{
+        return $this->judul;
+    }
 
-### Langkah 6 — Membuktikan komposisi benar-benar komposisi
+    public function __toString(): string{
+        return sprintf('Bab %d: %s', $this->nomor, $this->judul);
+    }
+}
 
-- Buat sesi-07/bukti-relasi.md.
-- Untuk relasi komposisi Anda, tulis kode di Main yang MENCOBA mengubah koleksi internal dari luar. Catat hasilnya.
-- Untuk relasi agregasi, tunjukkan bahwa objek bagian tetap hidup setelah dilepas dari induknya.
+final class Buku
+{
+    private array $bab = [];
 
-> **Checkpoint —** bukti-relasi.md menunjukkan koleksi komposisi menolak diubah, dan objek agregasi tetap ada setelah dilepas.
+    private string $nomorInduk;
 
-## E. Latihan mandiri di lab
+    private string $judul;
 
-_Dikerjakan bila langkah kerja selesai lebih awal. Tidak wajib, tetapi menambah nilai pada aspek penerapan konsep._
+    private string $penulis;
 
-1. Ambil satu relasi yang Anda tandai agregasi, lalu ubah menjadi komposisi. Catat berapa baris kode yang berubah dan mengapa.
-2. Buat activity diagram untuk alur pengembalian buku, termasuk cabang perhitungan denda.
+    private int $jumlahEksemplar;
 
-## F. Tugas rumah
+    private StatusKoleksi $status;
 
-1. TUGAS 2 (mata kuliah teori): modelkan Sistem Presensi Kuliah dengan minimal enam kelas, mencakup satu komposisi, satu agregasi, dan satu asosiasi, lengkap dengan multiplicity. Implementasikan kerangka kodenya di Java DAN PHP.
-2. Untuk setiap relasi pada tugas tersebut, tulis satu kalimat justifikasi: mengapa agregasi dan bukan komposisi, atau sebaliknya.
-3. Persiapan sesi 8: pelajari kembali seluruh materi sesi 1–7. Ujian praktik tengah semester berbentuk live coding di hadapan dosen.
+    public function __construct(
+        string $nomorInduk,
+        string $judul,
+        string $penulis,
+        int $jumlahEksemplar,
+        StatusKoleksi $status = StatusKoleksi::TERSEDIA
+    ) {
+        // TODO 2: tolak jumlah eksemplar negatif.
 
-## G. Luaran yang dikumpulkan
+        if($jumlahEksemplar < 0){
+            throw new InvalidArgumentException("Jumlah eksemplar tidak boleh negatif");
+        }
+        $this->nomorInduk = $nomorInduk;
+             $this->judul = $judul;
+                  $this->penulis= $penulis;
+                       $this->jumlahEksemplar = $jumlahEksemplar;
+                            $this->status = $status;
+    }
 
-Seluruh luaran diserahkan melalui repositori Git pribadi Anda, dengan riwayat commit yang menunjukkan proses pengerjaan — bukan satu commit tunggal di akhir.
+    /** TODO 3: satu-satunya cara Bab lahir. Parameternya nomor dan judul, bukan objek Bab. */
+    public function tambahBab(int $nomor, string $judulBab): void
+    {
+        $this->bab[] = new Bab($nomor, $judulBab);
+    }
 
-| Berkas / folder | Keterangan |
-|---|---|
-| `sesi-07/analisis.md` | Analisis kata benda, kata kerja, aturan bisnis, dan alasan pencoretan. |
-| `sesi-07/uml/` | usecase.puml, class.puml, sequence-pinjam.puml beserta hasil render. |
-| `sesi-07/java/ dan sesi-07/php/` | Kerangka kode Sistem Perpustakaan yang konsisten dengan diagram. |
-| `sesi-07/bukti-relasi.md` | Bukti bahwa komposisi dan agregasi diterapkan benar di kode. |
+    /**
+     * PHP mengembalikan array secara by-value, sehingga pemanggil hanya
+     * memperoleh salinan larik-nya. Namun objek DI DALAMNYA tetap berbagi
+     * referensi — itulah sebabnya Bab dibuat readonly.
+     * Tuliskan penjelasan ini di bukti-relasi.md.
+     *
+     * @return Bab[]
+     */
+    public function getBab(): array { return $this->bab; }
 
-## H. Rubrik penilaian sesi ini
+    public function tersedia(): bool { return $this->jumlahEksemplar > 0; }
 
-| Aspek | Bobot | Kriteria |
-|---|---|---|
-| Kebenaran fungsional | 35% | Seluruh perintah pada langkah kerja berjalan dan menghasilkan keluaran yang diminta. |
-| Penerapan konsep sesi ini | 30% | Konsep yang menjadi Sub-CPMK sesi ini diterapkan dengan tepat, bukan sekadar membuat program berjalan. |
-| Keterbacaan dan konvensi | 10% | Penamaan bermakna, format konsisten, komentar seperlunya, riwayat commit wajar. |
-| Demo dan pertanyaan lisan | 25% | Mampu menjelaskan setiap baris kode sendiri dan menjawab pertanyaan demo. MENGGUGURKAN: tanpa demo, tugas tidak dinilai. |
+    /** TODO 4 */
+    public function kurangiStok(): void {
+        if(!this->tersedia()){
+            throw new UnderflowException("Stok Buku Habis");
+        }
+        $this->jumlahEksemplar--;
+        if($this->jumlahEksemplar == 0){
+            $this->status = StatusKoleksi::DIPINJAM;
+        }
+    }
 
-## I. Pertanyaan demo
+    public function tambahStok(): void { $this->jumlahEksemplar++;
+    $this->status = StatusKoleksi::TERSEDIA;
+    }
 
-> Pertanyaan berikut akan diajukan saat Anda mendemokan pekerjaan sesi ini. Daftar ini sengaja dibuka agar Anda mempersiapkan **pemahaman**, bukan hafalan. Anda boleh memakai alat bantu apa pun saat mengerjakan — tetapi kode yang tidak dapat Anda jelaskan sendiri tidak dinilai.
+    public function getNomorInduk(): string { return $this->nomorInduk; }
+    public function getJudul(): string { return $this->judul; }
 
-1. Tunjuk satu komposisi di diagram Anda, lalu tunjuk baris kode yang mewujudkannya. Apa yang membuatnya komposisi dan bukan agregasi?
-2. Kalau saya menghapus objek induk pada relasi komposisi Anda, apa yang terjadi pada bagiannya? Tunjukkan di kode.
-3. Mengapa getter untuk koleksi komposisi mengembalikan salinan? Apa yang terjadi kalau tidak?
-4. Di diagram Anda tertulis multiplicity 1..*. Baris kode mana yang menjamin angka minimalnya satu?
-5. Ada kelas di diagram Anda yang tidak ada di kode, atau sebaliknya? Kita periksa satu per satu.
-6. Pada sequence diagram, objek mana yang memutuskan bahwa peminjaman ditolak? Mengapa bukan objek yang lain?
-7. Saya ingin menambah aturan: satu anggota maksimum meminjam tiga buku. Di diagram, itu muncul di mana? Di kode, di mana?
+    public function getStatus():StatusKoleksi{
+        return $this->status;
+    }
 
-## J. Kesalahan yang sering terjadi
+    public function __toString(): string
+    {
+        return sprintf('%-32s %-16s [%d eks, %d bab]',
+            $this->judul, $this->penulis, $this->jumlahEksemplar, count($this->bab), $this->status->value);
+    }
+}
 
-| Gejala | Penyebab yang lazim | Cara memperbaiki |
-|---|---|---|
-| Semua relasi digambar dengan garis polos | Belum membedakan derajat keterikatan. | Tentukan tiap relasi dengan pertanyaan "kalau induknya dihapus...". Gunakan *-- , o-- , --> , ..> sesuai hasilnya. |
-| Multiplicity tidak ditulis | Dianggap detail yang bisa ditambahkan nanti. | Multiplicity adalah aturan bisnis. Tanpa itu, model kehilangan informasi penting dan tidak bisa diterjemahkan ke validasi. |
-| Diagram menyebut komposisi, tetapi getter membocorkan koleksi | Diagram dibuat menurut niat, kode ditulis menurut kebiasaan. | Kembalikan List.copyOf(...) di Java; jadikan objek bagian readonly di PHP. |
-| PlantUML gagal merender | Kesalahan sintaks, atau Graphviz belum terpasang. | Periksa pesan kesalahannya; untuk diagram tertentu PlantUML membutuhkan Graphviz (dot). |
-| Kompilasi Java gagal karena struktur folder tidak cocok dengan package | Nama package tidak sama dengan jalur folder. | Samakan keduanya, atau kompilasi dengan menyebut seluruh berkas: javac -d out $(find . -name "*.java"). |
+final class Mahasiswa
+{
+    private string $nim;
 
-## Lembar verifikasi demo
+    private string $nama;
 
-Diisi oleh dosen atau asisten pada saat demo. Tugas tanpa lembar terverifikasi tidak dinilai.
+    private JenisKeanggotaan $jenis;
 
-|  |  |
-|---|---|
-| Nama / NIM |  |
-| Tanggal demo |  |
-| Nilai sesi ini |  |
-| Catatan penguji |  |
-| Paraf penguji |  |
+    public function __construct(
+        string $nim,
+        string $nama,
+        JenisKeanggotaan $jenis = JenisKeanggotaan::MAHASISWA
+    ) {
+        $this->nim = $nim;
+             $this->nama = $nama;
+                  $this->jenis = $jenis;
+    }
 
----
+    public function getNim(): string { return $this->nim; }
+    public function getNama(): string {
+        return $this->nama;
+    }
+    public function getJenis(): JenisKeanggotaan{
+        return $this->jenis;
+    }
+    public function __toString(): string { 
+        return sprintf('%s %s (%s)', $this->nim, $this->nama, $this->jenis->value);
+    
+    }
+}
 
-_Modul ini disusun 10 September 2026. Versi teknologi yang dirujuk (Java 25 LTS, PHP 8.4/8.5, Laravel 13, Spring Boot 4.1) diverifikasi pada tanggal tersebut dan perlu diperiksa ulang sebelum semester berjalan._
+final class Jurusan
+{
+    private array $mahasiswa = [];
+
+    private string $kode;
+
+    private string $nama;
+
+    public function __construct(string $kode, string $nama) {
+        $this->kode = $kode;
+        $this->nama = $nama;
+    }
+
+    /** TODO 5: terima objek dari luar (agregasi). Jangan menambahkan duplikat. */
+    public function daftarkan(Mahasiswa $m): void {
+        foreach($this->mahasiswa as $existing){
+            if($existing->getNim()== $m->getNim()){
+                return;
+            }
+        }
+        $this->mahasiswa[] = $m;
+    }
+
+    /** TODO 6: lepaskan dari jurusan. Objeknya tetap hidup. */
+    public function keluarkan(Mahasiswa $m): void {
+        foreach ($this->mahasiswa as $i => $existing) {
+            if($existing->getNim() == $m->getNim()){
+                unset($this->mahasiswa[$i]);
+                $this->mahasiswa = array_values($this->mahasiswa);
+                return;
+            }
+        }
+    }
+
+    /** @return Mahasiswa[] */
+    public function getMahasiswa(): array { return $this->mahasiswa; }
+
+    public function __toString(): string
+    {
+        return sprintf('%s - %s (%d mahasiswa)', $this->kode, $this->nama, count($this->mahasiswa));
+    } `
+    
+- `<?php
+declare(strict_types=1);`
+
+`require_once __DIR__ . '/relasi.php';`
+
+`echo '=== Komposisi: Buku memiliki Bab ===', PHP_EOL;
+$buku = new Buku('PBO-001', 'Pemrograman Berorientasi Objek', 'A. W. Pribadi', 3);
+$buku->tambahBab(1, 'Paradigma Objek');
+$buku->tambahBab(2, 'Enkapsulasi');
+$buku->tambahBab(3, 'Pewarisan dan Polimorfisme');
+echo '  ', $buku, PHP_EOL;
+foreach ($buku->getBab() as $b) {
+    echo '    ', $b, PHP_EOL;
+}`
+
+`echo PHP_EOL, '=== Agregasi: Jurusan menaungi Mahasiswa ===', PHP_EOL;
+$ani  = new Mahasiswa('2024001', 'Ani Lestari');
+$budi = new Mahasiswa('2024002', 'Budi Santoso');`
+
+`$informatika = new Jurusan('TI', 'Teknik Informatika');
+$informatika->daftarkan($ani);
+$informatika->daftarkan($budi);
+echo '  ', $informatika, PHP_EOL;`
+
+`$informatika->keluarkan($budi);
+echo '  Setelah Budi pindah: ', $informatika, PHP_EOL;
+echo '  Budi tetap ada sebagai objek: ', $budi, PHP_EOL;`
+
+
+## 3. Hasil Running Program
+
+### 3.1 Hasil Running Java
+
+<img width="490" height="226" alt="Screenshot 2026-10-25 at 12 14 24" src="https://github.com/user-attachments/assets/6e4f2a3b-5ef1-417d-8c0e-d1032e79c10f" />
+
+
+
+Program Java berhasil dijalankan dan menampilkan hasil implementasi komposisi serta agregasi.
+
+### 3.2 Hasil Running PHP
+
+<img width="503" height="141" alt="Screenshot 2026-10-25 at 12 28 40" src="https://github.com/user-attachments/assets/9186b875-3900-4f31-ab8d-eca77d65a92b" />
+
+
+Program PHP berhasil dijalankan tanpa error. Informasi buku dan bab ditampilkan dengan benar, serta objek mahasiswa tetap ada setelah dilepaskan dari jurusan.
+
+## 4. Analisis
+
+### 4.1 Komposisi
+
+Komposisi merupakan relasi ketika objek bagian bergantung pada objek induknya. Pada program ini, buku memiliki beberapa bab yang dibuat melalui objek buku. Koleksi bab tidak dapat diubah secara langsung dari luar.
+
+### 4.2 Agregasi
+
+Agregasi merupakan relasi ketika objek bagian tetap dapat berdiri sendiri meskipun sudah tidak terhubung dengan objek induknya. Pada program ini, mahasiswa tetap ada sebagai objek setelah dikeluarkan dari jurusan.
+
+## 5. Kesimpulan
+
+Berdasarkan praktikum yang telah dilakukan, komposisi dan agregasi memiliki perbedaan dalam ketergantungan objek. Komposisi menunjukkan hubungan yang kuat antara objek induk dan bagian, sedangkan agregasi memungkinkan objek bagian tetap hidup secara mandiri. Implementasi pada Java dan PHP berhasil dijalankan untuk menunjukkan kedua konsep tersebut.
